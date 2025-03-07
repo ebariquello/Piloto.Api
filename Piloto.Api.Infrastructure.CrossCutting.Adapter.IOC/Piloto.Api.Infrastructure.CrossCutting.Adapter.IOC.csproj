@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\Piloto.Api.Application\Piloto.Api.Application.csproj" />
+    <ProjectReference Include="..\Piloto.Api.Domain.Services\Piloto.Api.Domain.Services.csproj" />
+    <ProjectReference Include="..\Piloto.Api.Infrastructure.Data.Repository\Piloto.Api.Infrastructure.Data.Repository.csproj" />
+  </ItemGroup>
+
+</Project>

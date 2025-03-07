@@ -1,0 +1,75 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Application\**" />
+    <Compile Remove="Domain\**" />
+    <EmbeddedResource Remove="Application\**" />
+    <EmbeddedResource Remove="Domain\**" />
+    <None Remove="Application\**" />
+    <None Remove="Domain\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Application\ProductSupplier\ApplicationProductSupplierServiceTests.cs" />
+    <Compile Include="Application\ProductSupplier\ApplicationServiceProductSupplierTestsFixture.cs" />
+    <Compile Include="Application\Product\ApplicationProductServiceTests.cs" />
+    <Compile Include="Application\Product\ApplicationServiceProductTestsFixture.cs" />
+    <Compile Include="Application\Supplier\ApplicationServiceSupplierTestsFixture.cs" />
+    <Compile Include="Application\Supplier\ApplicationSupplierServiceTests.cs" />
+    <Compile Include="Domain\ProductSupplier\ProductSupplierServiceTests.cs" />
+    <Compile Include="Domain\ProductSupplier\ProductSupplierTests.cs" />
+    <Compile Include="Domain\ProductSupplier\ProductSupplierTestsFixture.cs" />
+    <Compile Include="Domain\Product\ProductFixtureTests.cs" />
+    <Compile Include="Domain\Product\ProductServiceTests.cs" />
+    <Compile Include="Domain\Product\ProductTests.cs" />
+    <Compile Include="Domain\Supplier\SupplierServiceTests.cs" />
+    <Compile Include="Domain\Supplier\SupplierTests.cs" />
+    <Compile Include="Domain\Supplier\SupplierTestsFixture.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMoqCore" Version="2.1.0" />
+    <PackageReference Include="Bogus" Version="34.0.2" />
+    <PackageReference Include="coverlet.msbuild" Version="3.1.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" Version="6.7.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.5" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+    <PackageReference Include="Moq" Version="4.18.1" />
+    <PackageReference Include="more.xunit.runner.visualstudio" Version="2.3.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="3.1.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Piloto.Api.Application.DTO\Piloto.Api.Application.DTO.csproj" />
+    <ProjectReference Include="..\Piloto.Api.Application\Piloto.Api.Application.csproj" />
+    <ProjectReference Include="..\Piloto.Api.Domain.Core\Piloto.Api.Domain.Core.csproj" />
+    <ProjectReference Include="..\Piloto.Api.Domain.Services\Piloto.Api.Domain.Services.csproj" />
+    <ProjectReference Include="..\Piloto.Api.Domain\Piloto.Api.Domain.csproj" />
+    <ProjectReference Include="..\Piloto.Api.Infrastructure.CrossCutting.Adapter\Piloto.Api.Infrastructure.CrossCutting.Adapter.csproj" />
+    <ProjectReference Include="..\Piloto.Api.Infrastructure.Data.Repository\Piloto.Api.Infrastructure.Data.Repository.csproj" />
+    <ProjectReference Include="..\Piloto.Api.Infrastructure.Data\Piloto.Api.Infrastructure.Data.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,46 @@
+version: "3.8"
+services:
+  db-piloto:
+    container_name: db-piloto
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    user: root
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=StrongPassword@
+      - MSSQL_AGENT_ENABLED=True
+      - MSSQL_TLS_VERSION=1.2
+      - MSSQL_TRUST_CERTIFICATE=True
+    volumes:
+      - sqldata:/var/opt/mssql/data
+    command: >
+      /bin/bash -c "chown -R mssql:mssql /var/opt/mssql/data &&
+      /opt/mssql/bin/sqlservr"
+    ports:
+      - 1433:1433
+    restart: always
+    networks:
+      - appnetwork
+  api-ri:
+    container_name: piloto-api
+    build:
+      context: .
+      dockerfile: Piloto.Api.WebApi/Dockerfile
+    depends_on:
+      - db-piloto
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certs/aspnetcore-selfsigned.crt
+      - ASPNETCORE_Kestrel__Certificates__Default__KeyPath=/app/certs/aspnetcore-selfsigned.key
+    ports:
+      - 5000:5000
+      - 5001:5001
+    networks:
+      - appnetwork
+volumes:
+  sqldata:
+    name: sqldata
+    driver: local
+networks:
+  appnetwork:
+    name: appnetwork
+    driver: bridge

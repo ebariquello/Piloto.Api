@@ -1,0 +1,6 @@
+@Piloto.Api.WebApi_HostAddress = http://localhost:5206
+
+GET {{Piloto.Api.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,85 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32516.85
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Piloto.Api.Infrastructure.Data", "Piloto.Api.Infrastructure.Data\Piloto.Api.Infrastructure.Data.csproj", "{39BF0617-5F70-4F97-989C-9DC4AC058E3C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Piloto.Api.Domain.Core", "Piloto.Api.Domain.Core\Piloto.Api.Domain.Core.csproj", "{FF06E2D5-33E9-4CDB-B445-0317BFFE39A0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Piloto.Api.Domain.Services", "Piloto.Api.Domain.Services\Piloto.Api.Domain.Services.csproj", "{ADE53C22-03DE-461D-96A0-503FE8CCFB0E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Piloto.Api.Application", "Piloto.Api.Application\Piloto.Api.Application.csproj", "{713BFE61-F7AD-49E1-92FA-4E1F1FC28232}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Piloto.Api.Application.DTO", "Piloto.Api.Application.DTO\Piloto.Api.Application.DTO.csproj", "{9CEE4C68-9312-4659-8E90-4B589238E9D6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Piloto.Api.Infrastructure.CrossCutting.Adapter", "Piloto.Api.Infrastructure.CrossCutting.Adapter\Piloto.Api.Infrastructure.CrossCutting.Adapter.csproj", "{F3E7771A-1FF7-4E1C-B46B-1D0D17C699CE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Piloto.Api.Domain", "Piloto.Api.Domain\Piloto.Api.Domain.csproj", "{D0ED9CE4-3D2F-46ED-9D96-A5F51E197D20}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Piloto.Api.Infrastructure.Data.Repository", "Piloto.Api.Infrastructure.Data.Repository\Piloto.Api.Infrastructure.Data.Repository.csproj", "{86447D2C-38C3-4A8F-8CDA-FDDC69E65DE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Piloto.Api.UnitTests", "Piloto.Api.UnitTests\Piloto.Api.UnitTests.csproj", "{26AC17D7-1E20-FC90-C77C-EBA643583C43}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Piloto.Api.WebApi", "Piloto.Api.WebApi\Piloto.Api.WebApi.csproj", "{5B27BE9D-AEE9-4D9C-8CAE-6C25DD57204E}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{81DDED9D-158B-E303-5F62-77A2896D2A5A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{39BF0617-5F70-4F97-989C-9DC4AC058E3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39BF0617-5F70-4F97-989C-9DC4AC058E3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39BF0617-5F70-4F97-989C-9DC4AC058E3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39BF0617-5F70-4F97-989C-9DC4AC058E3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF06E2D5-33E9-4CDB-B445-0317BFFE39A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF06E2D5-33E9-4CDB-B445-0317BFFE39A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF06E2D5-33E9-4CDB-B445-0317BFFE39A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF06E2D5-33E9-4CDB-B445-0317BFFE39A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADE53C22-03DE-461D-96A0-503FE8CCFB0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADE53C22-03DE-461D-96A0-503FE8CCFB0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADE53C22-03DE-461D-96A0-503FE8CCFB0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADE53C22-03DE-461D-96A0-503FE8CCFB0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{713BFE61-F7AD-49E1-92FA-4E1F1FC28232}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{713BFE61-F7AD-49E1-92FA-4E1F1FC28232}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{713BFE61-F7AD-49E1-92FA-4E1F1FC28232}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{713BFE61-F7AD-49E1-92FA-4E1F1FC28232}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CEE4C68-9312-4659-8E90-4B589238E9D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CEE4C68-9312-4659-8E90-4B589238E9D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CEE4C68-9312-4659-8E90-4B589238E9D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CEE4C68-9312-4659-8E90-4B589238E9D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3E7771A-1FF7-4E1C-B46B-1D0D17C699CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3E7771A-1FF7-4E1C-B46B-1D0D17C699CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3E7771A-1FF7-4E1C-B46B-1D0D17C699CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3E7771A-1FF7-4E1C-B46B-1D0D17C699CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0ED9CE4-3D2F-46ED-9D96-A5F51E197D20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0ED9CE4-3D2F-46ED-9D96-A5F51E197D20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0ED9CE4-3D2F-46ED-9D96-A5F51E197D20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0ED9CE4-3D2F-46ED-9D96-A5F51E197D20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86447D2C-38C3-4A8F-8CDA-FDDC69E65DE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86447D2C-38C3-4A8F-8CDA-FDDC69E65DE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86447D2C-38C3-4A8F-8CDA-FDDC69E65DE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86447D2C-38C3-4A8F-8CDA-FDDC69E65DE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26AC17D7-1E20-FC90-C77C-EBA643583C43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26AC17D7-1E20-FC90-C77C-EBA643583C43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26AC17D7-1E20-FC90-C77C-EBA643583C43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26AC17D7-1E20-FC90-C77C-EBA643583C43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B27BE9D-AEE9-4D9C-8CAE-6C25DD57204E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B27BE9D-AEE9-4D9C-8CAE-6C25DD57204E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B27BE9D-AEE9-4D9C-8CAE-6C25DD57204E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B27BE9D-AEE9-4D9C-8CAE-6C25DD57204E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1C62838A-F4CD-464A-B1E4-2EE7E0049119}
+	EndGlobalSection
+EndGlobal
