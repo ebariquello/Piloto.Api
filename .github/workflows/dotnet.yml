@@ -31,8 +31,10 @@ jobs:
       run: reportgenerator -reports:Piloto.Api.UnitTests/TestResults/coverage.cobertura.xml -targetdir:Piloto.Api.UnitTests/TestResults/CoverageReport
     - name: Check coverage threshold
       run: |
-        coverage=$(grep -oP '(?<=<coverage line-rate=")[^"]*' Piloto.Api.UnitTests/TestResults/CoverageReport/index.html)
-        coverage=$(echo "$coverage * 100" | bc)
+        coverage=$(grep -oP '(?<=<div class="large cardpercentagebar cardpercentagebar76">)[^<]+' Piloto.Api.UnitTests/TestResults/CoverageReport/index.html)
+        echo "Extracted coverage value: $coverage"
+        coverage=$(echo "$coverage" | tr -d '%')
+        echo "Coverage percentage: $coverage%"
         if (( $(echo "$coverage < 65" | bc -l) )); then
           echo "Code coverage ($coverage%) is below the threshold of 65%."
           exit 1

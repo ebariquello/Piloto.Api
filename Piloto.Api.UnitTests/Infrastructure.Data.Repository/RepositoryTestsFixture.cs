@@ -2,6 +2,7 @@
 using Bogus.Extensions.Brazil;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.InMemory;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Piloto.Api.Domain.Core.Interfaces.Repositories;
 using Piloto.Api.Domain.Models;
@@ -27,26 +28,43 @@ namespace Piloto.Api.UnitTests.Infrastructure.Data.Repository
         public IServiceProvider ServiceProvider { get; set; }
         public RepositoryTestsFixture()
         {
+            // var services = new ServiceCollection();
+           // var builder = new DbContextOptionsBuilder<StockManagementDBContext>();
+           // DbContextOptions<StockManagementDBContext> dbContextOptions = new DbContextOptionsBuilder<StockManagementDBContext>()
+           //.UseInMemoryDatabase(databaseName: "StockManagementDB")
+           //.Options;
+
+            // services.AddDbContext<StockManagementDBContext>(opt => opt.UseInMemoryDatabase(databaseName: "StockManagementDB"), ServiceLifetime.Scoped);
+            // services.AddScoped<Func<DbContext>>(
+            //     (provider) =>
+            //         () => provider.GetService<StockManagementDBContext>()
+            //     );
+            // services.AddScoped(typeof(IDbFactoryBase<>),
+            //     typeof(DbFactoryBase<>));
+
+            // services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+
+
+            // services.AddScoped(typeof(IRepositoryProduct), typeof(RepositoryProduct));
+            // services.AddScoped(typeof(IRepositorySupplier), typeof(RepositorySupplier));
+            // services.AddScoped(typeof(IRepositoryProductSupplier), typeof(RepositoryProductSupplier));
+
+            //ServiceProvider = services.BuildServiceProvider();
             var services = new ServiceCollection();
-            var builder = new DbContextOptionsBuilder<StockManagementDBContext>();
-            DbContextOptions<StockManagementDBContext> dbContextOptions = new DbContextOptionsBuilder<StockManagementDBContext>()
-           .UseInMemoryDatabase(databaseName: "StockManagementDB")
-           .Options;
 
-            services.AddDbContext<StockManagementDBContext>(opt => opt.UseInMemoryDatabase(databaseName: "StockManagementDB"), ServiceLifetime.Scoped);
-            services.AddScoped<Func<DbContext>>(
-                (provider) =>
-                    () => provider.GetService<StockManagementDBContext>()
-                );
-            services.AddScoped(typeof(IDbFactoryBase<>),
-                typeof(DbFactoryBase<>));
+            // Create a configuration for the in-memory database
+            var configuration = new ConfigurationBuilder()
+                .AddInMemoryCollection(new Dictionary<string, string>
+                {
+                    { "DbRunAs", "InMemory" }
+                })
+                .Build();
 
-            services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+            // Call AddDataServices with the in-memory configuration
+            services.AddDataServices(configuration);
+            services.AddRepositoryServicesDI();
 
-
-            services.AddScoped(typeof(IRepositoryProduct), typeof(RepositoryProduct));
-            services.AddScoped(typeof(IRepositorySupplier), typeof(RepositorySupplier));
-            services.AddScoped(typeof(IRepositoryProductSupplier), typeof(RepositoryProductSupplier));
+            // Override the DbContext to use InMemoryDatabase
 
             ServiceProvider = services.BuildServiceProvider();
 
@@ -56,6 +74,7 @@ namespace Piloto.Api.UnitTests.Infrastructure.Data.Repository
                 var context = scope.ServiceProvider.GetRequiredService<StockManagementDBContext>();
                 context.Database.EnsureCreated();
             }
+
 
         }
         public Supplier GetSupplierHasAddressHasNoProducts()
