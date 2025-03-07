@@ -29,6 +29,17 @@ namespace Piloto.Api.Domain.Services.Services
 
             return await _repository.Add(obj);
         }
+        public async virtual Task AddRange(ICollection<TEntity> objs)
+        {
+            try
+            {
+                await _repository.AddRange(objs);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         public async virtual Task<TEntity> GetById(int id)
         {
             return await _repository.GetById(id);

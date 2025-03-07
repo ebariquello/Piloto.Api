@@ -64,7 +64,6 @@ namespace Piloto.Api.UnitTests.Infrastructure.Data.Repository
             services.AddDataServices(configuration);
             services.AddRepositoryServicesDI();
 
-            // Override the DbContext to use InMemoryDatabase
 
             ServiceProvider = services.BuildServiceProvider();
 

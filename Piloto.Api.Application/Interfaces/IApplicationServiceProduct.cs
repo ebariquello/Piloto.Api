@@ -7,6 +7,7 @@ namespace Piloto.Api.Application.Interfaces
     public interface IApplicationServiceProduct
     {
         Task<ProductDTO> Add(ProductDTO productDTO);
+        Task<ICollection<ProductDTO>> AddRange(ICollection<ProductDTO> productDTO);
         Task<ProductDTO> GetById(int Id);
 
         Task<ICollection<ProductDTO>> GetAll();

@@ -21,6 +21,11 @@ using Piloto.Api.Application.DTO.DTO;
 using Piloto.Api.Infrastructure.Data.Repository;
 using Microsoft.EntityFrameworkCore;
 using Piloto.Api.Infrastructure.Repository.Repositories;
+using Microsoft.Extensions.Configuration;
+using Piloto.Api.Infrastructure.Data;
+using Piloto.Api.Domain.Services;
+using Piloto.Api.Application;
+using Piloto.Api.Infrastructure.CrossCutting.Adapter;
 
 namespace Piloto.Api.UnitTests.Application.Product
 {
@@ -31,42 +36,65 @@ namespace Piloto.Api.UnitTests.Application.Product
 
     public class ApplicationServiceProductTestsFixture : IDisposable
     {
-        public Mock<IServiceProduct> ServiceProductMock { get; set; }
-        //public Mock<IRepositoryProduct> RepositoryProductMock { get; set; }
-        public Mock<IUnitOfWork<DbContext>> UnitOfWorkMock { get; set; }
+        //public Mock<IServiceProduct> ServiceProductMock { get; set; }
+        ////public Mock<IRepositoryProduct> RepositoryProductMock { get; set; }
+        //public Mock<IUnitOfWork<DbContext>> UnitOfWorkMock { get; set; }
 
         public IServiceProvider ServiceProvider { get; set; }
         public ApplicationServiceProductTestsFixture()
         {
-            var mocker = new AutoMoqCore.AutoMoqer();
-            UnitOfWorkMock = mocker.GetMock<IUnitOfWork<DbContext>>();
-            var mockMapper = new Mock<IMapper>();
+            //var mocker = new AutoMoqCore.AutoMoqer();
+            //UnitOfWorkMock = mocker.GetMock<IUnitOfWork<DbContext>>();
+            //var mockMapper = new Mock<IMapper>();
 
-            MapperConfiguration mapperConfiguration = new MapperConfiguration(cfg => cfg.AddProfile(new MappingConfiguration()));
-            IMapper mapper = mapperConfiguration.CreateMapper();
+            //MapperConfiguration mapperConfiguration = new MapperConfiguration(cfg => cfg.AddProfile(new MappingConfiguration()));
+            //IMapper mapper = mapperConfiguration.CreateMapper();
+            //var services = new ServiceCollection();
+
+            //services.AddScoped(typeof(IMapperProduct), x =>
+            //{
+            //    return new MapperProduct(mapper);
+            //});
+            //services.AddScoped(typeof(IUnitOfWork<DbContext>), p => { return UnitOfWorkMock.Object; });
+
+
+            //services.AddScoped(typeof(IApplicationServiceProduct), typeof(ApplicationServiceProduct));
+            //ServiceProductMock = mocker.GetMock<IServiceProduct>();
+            ////RepositoryProductMock = mocker.GetMock<IRepositoryProduct>();
+            //services.AddScoped(typeof(IServiceProduct), x =>
+            //{
+            //    return ServiceProductMock.Object;
+            //});
+            ////services.AddScoped(typeof(IRepositoryProduct), p =>
+            ////{
+            ////    return RepositoryProductMock.Object;
+            ////});
+            //services.AddAutoMapper(typeof(MapperConfiguration));
             var services = new ServiceCollection();
 
-            services.AddScoped(typeof(IMapperProduct), x =>
-            {
-                return new MapperProduct(mapper);
-            });
-            services.AddScoped(typeof(IUnitOfWork<DbContext>), p => { return UnitOfWorkMock.Object; });
+            // Create a configuration for the in-memory database
+            var configuration = new ConfigurationBuilder()
+                .AddInMemoryCollection(new Dictionary<string, string>
+                {
+                    { "DbRunAs", "InMemory" }
+                })
+                .Build();
 
-
-            services.AddScoped(typeof(IApplicationServiceProduct), typeof(ApplicationServiceProduct));
-            ServiceProductMock = mocker.GetMock<IServiceProduct>();
-            //RepositoryProductMock = mocker.GetMock<IRepositoryProduct>();
-            services.AddScoped(typeof(IServiceProduct), x =>
-            {
-                return ServiceProductMock.Object;
-            });
-            //services.AddScoped(typeof(IRepositoryProduct), p =>
-            //{
-            //    return RepositoryProductMock.Object;
-            //});
-            services.AddAutoMapper(typeof(MapperConfiguration));
+            // Call AddDataServices with the in-memory configuration
+            services.AddDataServices(configuration);
+            services.AddRepositoryServicesDI();
+            services.AddServicesDI();
+            services.AddApplicationServicesDI();
+            services.AddCrossCuttingAdapterServicesDI();
 
             ServiceProvider = services.BuildServiceProvider();
+
+            // Ensure the database is created
+            using (var scope = ServiceProvider.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<StockManagementDBContext>();
+                context.Database.EnsureCreated();
+            }
 
         }
 

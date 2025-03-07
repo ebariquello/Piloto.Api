@@ -13,6 +13,9 @@ namespace Piloto.Api.Domain.Core.Interfaces.Services
 
         Task<TEntity> Add(TEntity entity);
 
+        Task AddRange(ICollection<TEntity> entities);
+
+
         Task<TEntity> GetById(int id);
 
         Task<ICollection<TEntity>> GetAll();
