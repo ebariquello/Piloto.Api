@@ -52,6 +52,22 @@ namespace Piloto.Api.Infrastructure.Repository.Repositories
                 throw;
             }
         }
+        public async virtual Task AddRange(ICollection<TEntity> objs)
+        {
+            try
+            {
+                //_context.Set<TEntity>().Add(obj);
+                //_context.SaveChanges();
+                 await DbSet.AddRangeAsync(objs);
+             
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         //public virtual TEntity GetById(int Id) => _context.Set<TEntity>().Find(Id);
         //public virtual ICollection<TEntity> GetAll() => _context.Set<TEntity>().ToList();
         public async virtual Task<TEntity> GetById(int Id) => await DbSet.FindAsync(Id);

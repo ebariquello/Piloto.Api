@@ -15,6 +15,8 @@ namespace Piloto.Api.Domain.Core.Interfaces.Repositories
     {
 
         Task<TEntity> Add(TEntity entity);
+        Task AddRange(ICollection<TEntity> entity);
+
 
         Task<TEntity> GetById(int id);
 

@@ -31,6 +31,19 @@ namespace Piloto.Api.Application.Services
             var resultDTO = _mapperProduct.MapperToDTO(resultEntity);
             return resultDTO;
 ;        }
+        public async Task<ICollection<ProductDTO>> AddRange(ICollection<ProductDTO> productDTO)
+        {
+            var resultEntity = new List<Domain.Models.Product>();
+            foreach (var product in productDTO)
+            {
+                var objProduct = _mapperProduct.MapperToEntity(product);
+                resultEntity.Add(await _serviceProduct.Add(objProduct));
+            }
+            await _unitOfWork.SaveChangeAsync();
+            var resultDTOs = _mapperProduct.MapperListProducts(resultEntity);
+            return resultDTOs;
+            ;
+        }
 
         public void Dispose()
         {
