@@ -49,7 +49,14 @@ namespace Piloto.Api.UnitTests.Infrastructure.Data.Repository
             services.AddScoped(typeof(IRepositoryProductSupplier), typeof(RepositoryProductSupplier));
 
             ServiceProvider = services.BuildServiceProvider();
-          
+
+            // Ensure the database is created
+            using (var scope = ServiceProvider.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<StockManagementDBContext>();
+                context.Database.EnsureCreated();
+            }
+
         }
         public Supplier GetSupplierHasAddressHasNoProducts()
         {
