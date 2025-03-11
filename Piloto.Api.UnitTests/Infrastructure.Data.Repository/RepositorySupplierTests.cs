@@ -35,16 +35,16 @@ namespace Piloto.Api.UnitTests.Infrastructure.Data.Repository
             var supplier = Fixture.GetSupplierHasAddressHasNoProducts();
 
             /// Act
-            var savedSupplierResultAdd = await repoSupplier.Add(supplier);
+            var savedSupplierResultAdd = await repoSupplier.AddAsync(supplier);
             await unitOfWork.SaveChangeAsync();
 
             var findLastSavedSupplier = await repoSupplier
-                .Find(p => supplier.Name == p.Name &&
+                .FindAsync(p => supplier.Name == p.Name &&
                 supplier.CNPJ == p.CNPJ &&
                 p.SupplierAddresses.Count == 1&& 
                 p.ProductSuppliers.Count == 0);
 
-            var suppliers = await repoSupplier.GetAll();
+            var suppliers = await repoSupplier.GetAsync();
             /// Assert
             suppliers.Should().HaveCount(c => c >= 1).And.OnlyHaveUniqueItems();
             Assert.Single(findLastSavedSupplier);
@@ -69,26 +69,26 @@ namespace Piloto.Api.UnitTests.Infrastructure.Data.Repository
             var supplier2 = Fixture.GetSupplierHasAddressHasNoProducts();
 
             /// Act
-            var savedSupplierResultAdd = await repoSupplier.Add(supplier);
-            var savedSupplierResultAdd2 = await repoSupplier.Add(supplier2);
-            await unitOfWork.SaveChangeAsync();
+            var savedSupplierResultAdd = await repoSupplier.AddAsync(supplier);
+            var savedSupplierResultAdd2 = await repoSupplier.AddAsync(supplier2);
+            await unitOfWork.SaveChangeAsync(true);
 
             savedSupplierResultAdd.ProductSuppliers = SharedTestsFixture.GenerateProductsForSupplier(savedSupplierResultAdd, 2);
-            var updatedSupplier = await repoSupplier.Update(savedSupplierResultAdd);
-            await unitOfWork.SaveChangeAsync();
+            var updatedSupplier = await repoSupplier.UpdateAsync(savedSupplierResultAdd);
+            await unitOfWork.SaveChangeAsync(true);
 
             var findLastSavedSupplier = await repoSupplier
-                .GetById(updatedSupplier.Id.Value);
+                .GetByIdAsync(updatedSupplier.Id.Value, repoSupplier.GetQuery(s=>s.ProductSuppliers));
 
             var findLastSavedSupplier2 = await repoSupplier
-                    .GetById(savedSupplierResultAdd2.Id.Value);
+                    .GetByIdAsync(savedSupplierResultAdd2.Id.Value, repoSupplier.GetQuery(s => s.ProductSuppliers));
 
             /// Assert
             Assert.Equal(savedSupplierResultAdd.Id, findLastSavedSupplier.Id);
             Assert.Equal(supplier.Name, findLastSavedSupplier.Name);
             Assert.Equal(supplier.CNPJ, findLastSavedSupplier.CNPJ);
             Assert.Equal(2, findLastSavedSupplier.ProductSuppliers.Count);
-            Assert.Null(findLastSavedSupplier2.ProductSuppliers);
+            Assert.Empty(findLastSavedSupplier2.ProductSuppliers);
         }
 
         [Fact]
@@ -107,32 +107,32 @@ namespace Piloto.Api.UnitTests.Infrastructure.Data.Repository
             var supplier = Fixture.GetSupplieHasAddressHasProducts();
 
             /// Act
-            var savedSupplierResultAdd = await repoSupplier.Add(supplier);
+            var savedSupplierResultAdd = await repoSupplier.AddAsync(supplier);
 
-            await unitOfWork.SaveChangeAsync();
+            await unitOfWork.SaveChangeAsync(true);
 
             // Find Last Supplier
             var findLastSavedSupplier = await repoSupplier
-                .GetById(savedSupplierResultAdd.Id.Value);
-            // Find Relationship Supplier Suppliers
+                .GetByIdAsync(savedSupplierResultAdd.Id.Value);
+            //Find Relationship Supplier Suppliers
             var findLastSavedProductSupplierBySupplierId = await repoSupplierSupplier
-                .Find(ps => ps.SupplierId == savedSupplierResultAdd.Id.Value);
+                .FindAsync(ps => ps.SupplierId == savedSupplierResultAdd.Id.Value);
 
-            // Kill RelationShip
-            findLastSavedProductSupplierBySupplierId.ToList().ForEach(async (ps) => await repoSupplierSupplier.Remove(ps));
+            //Kill RelationShip
+            findLastSavedProductSupplierBySupplierId.ToList().ForEach(async (ps) => await repoSupplierSupplier.RemoveAsync(ps));
 
             //Kill Supplier
-            findLastSavedSupplier.ProductSuppliers.ToList().ForEach(async (ps) => await repoProduct.Remove(ps.Product));
+            findLastSavedSupplier.ProductSuppliers.ToList().ForEach(async (ps) => await repoProduct.RemoveAsync(ps.Product));
 
             //Kill Supplier, Should kill Everything even Addresses
-            var result = await repoSupplier.Remove(findLastSavedSupplier);
+            var result = await repoSupplier.RemoveAsync(findLastSavedSupplier);
 
             //Commit
             await unitOfWork.SaveChangeAsync();
 
             //try find the supplier
             findLastSavedSupplier = await repoSupplier
-              .GetById(savedSupplierResultAdd.Id.Value);
+              .GetByIdAsync(savedSupplierResultAdd.Id.Value);
 
             /// Assert
             Assert.Null(findLastSavedSupplier);

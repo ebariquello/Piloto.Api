@@ -29,10 +29,10 @@ namespace Piloto.Api.UnitTests.Domain.Product
             var product = Fixture.GetValidProduct();
 
             // Act
-            await serviceProduct.Add(product);
+            await serviceProduct.AddAsync(product);
 
             // Assert
-            Fixture.RepositoryProductMock.Verify(r => r.Add(product), Times.Once);
+            Fixture.RepositoryProductMock.Verify(r => r.AddAsync(product), Times.Once);
 
         }
 
@@ -45,10 +45,10 @@ namespace Piloto.Api.UnitTests.Domain.Product
             var product = Fixture.GetInvalidProduct();
 
             // Act
-            await serviceProduct.Add(product);
+            await serviceProduct.AddAsync(product);
 
             // Assert
-            Fixture.RepositoryProductMock.Verify(r => r.Add(product), Times.Never);
+            Fixture.RepositoryProductMock.Verify(r => r.AddAsync(product), Times.Never);
 
         }
 
@@ -58,10 +58,10 @@ namespace Piloto.Api.UnitTests.Domain.Product
         {
             // Arrange
             var serviceProduct = Fixture.GetServiceProduct();
-            Fixture.RepositoryProductMock.Setup(c => c.GetAll()).ReturnsAsync(Fixture.GetMixedProducts());
+            Fixture.RepositoryProductMock.Setup(c => c.GetAsync(null,null,null,true,true)).ReturnsAsync(Fixture.GetMixedProducts());
 
             // Act
-            var products = await serviceProduct.GetAll();
+            var products = await serviceProduct.GetAsync();
 
             // Assert Fluent Assertions
             products.Should().HaveCount(c => c > 1).And.OnlyHaveUniqueItems();

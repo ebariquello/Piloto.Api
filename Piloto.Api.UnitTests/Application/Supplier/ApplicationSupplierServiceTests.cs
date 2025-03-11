@@ -3,6 +3,7 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Piloto.Api.Application.Interfaces;
+using Piloto.Api.Domain.Core.Interfaces.Services;
 using Piloto.Api.Infrastructure.CrossCutting.Adapter.Interfaces;
 using Piloto.Api.Infrastructure.CrossCutting.Adapter.Map;
 using System;
@@ -34,17 +35,17 @@ namespace Piloto.Api.UnitTests.Application.Supplier
             IServiceScope serviceScope = Fixture.ServiceProvider.CreateScope();
             IMapperSupplier mapperSupplier = serviceScope.ServiceProvider.GetService<IMapperSupplier>();
             IApplicationServiceSupplier applicationServiceSupplier = serviceScope.ServiceProvider.GetService<IApplicationServiceSupplier>();
-            Fixture.UnitOfWorkMock.Setup(uow => uow.SaveChangeAsync()).ReturnsAsync(1);
+            Fixture.UnitOfWorkMock.Setup(uow => uow.SaveChangeAsync(false)).ReturnsAsync(1);
             var supplierDTO = Fixture.GetValidSupplierDTO();
             Models.Supplier supplier = mapperSupplier.MapperToEntity(supplierDTO);
             var supplierAdded = new Models.Supplier(1, supplier.Name, supplier.CNPJ, supplier.ProductSuppliers, supplier.SupplierAddresses);
-            Fixture.ServiceSupplierMock.Setup(s => s.Add(supplier)).ReturnsAsync(supplierAdded);
+            Fixture.ServiceSupplierMock.Setup(s => s.AddAsync(supplier)).ReturnsAsync(supplierAdded);
             //Fixture.RepositorySupplierMock.Setup(s => s.Add(supplier)).ReturnsAsync(supplierAdded);
             // Act
             var result = await applicationServiceSupplier.Add(supplierDTO);
 
             // Assert
-            Fixture.ServiceSupplierMock.Verify(s => s.Add(supplier), Times.Once);
+            Fixture.ServiceSupplierMock.Verify(s => s.AddAsync(supplier), Times.Once);
             //Fixture.RepositorySupplierMock.Verify(s => s.Add(supplier), Times.Once);
             Assert.Equal(supplierAdded.Id, result.Id);
             Assert.Equal(supplierAdded.CNPJ, result.CNPJ);
@@ -58,7 +59,7 @@ namespace Piloto.Api.UnitTests.Application.Supplier
             IServiceScope serviceScope = Fixture.ServiceProvider.CreateScope();
             IMapperSupplier mapperSupplier = serviceScope.ServiceProvider.GetService<IMapperSupplier>();
             IApplicationServiceSupplier applicationServiceSupplier = serviceScope.ServiceProvider.GetService<IApplicationServiceSupplier>();
-            Fixture.ServiceSupplierMock.Setup(c => c.Add(mapperSupplier.MapperToEntity(Supplier)));
+            Fixture.ServiceSupplierMock.Setup(c => c.AddAsync(mapperSupplier.MapperToEntity(Supplier)));
             // Act
             applicationServiceSupplier.Add(Supplier);
 
@@ -78,7 +79,7 @@ namespace Piloto.Api.UnitTests.Application.Supplier
             MapperConfiguration mapperConfiguration = new MapperConfiguration(cfg => cfg.AddProfile(new MappingConfiguration()));
             IMapper mapper = mapperConfiguration.CreateMapper();
 
-            Fixture.ServiceSupplierMock.Setup((c) => c.GetAll()).ReturnsAsync(mapper.Map<ICollection<Models.Supplier>>(Fixture.GetMixedSupplierDTOs()));
+            Fixture.ServiceSupplierMock.Setup((c) => c.GetAsync(null,null, null,true, true)).ReturnsAsync(mapper.Map<ICollection<Models.Supplier>>(Fixture.GetMixedSupplierDTOs()));
 
             // Act
             var Suppliers = await applicationServiceSupplier.GetAll();

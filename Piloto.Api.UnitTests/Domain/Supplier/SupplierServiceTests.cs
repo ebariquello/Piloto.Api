@@ -29,10 +29,10 @@ namespace Piloto.Api.UnitTests.Domain.Supplier
             var supplier = Fixture.GetValidSupplier();
 
             // Act
-            await serviceSupplier.Add(supplier);
+            await serviceSupplier.AddAsync(supplier);
 
             // Assert
-            Fixture.RepositorySupplierMock.Verify(r => r.Add(supplier), Times.Once);
+            Fixture.RepositorySupplierMock.Verify(r => r.AddAsync(supplier), Times.Once);
           
         }
 
@@ -45,10 +45,10 @@ namespace Piloto.Api.UnitTests.Domain.Supplier
             var supplier = Fixture.GetInvalidSupplier();
 
             // Act
-            await serviceSupplier.Add(supplier);
+            await serviceSupplier.AddAsync(supplier);
 
             // Assert
-            Fixture.RepositorySupplierMock.Verify(r => r.Add(supplier), Times.Never);
+            Fixture.RepositorySupplierMock.Verify(r => r.AddAsync(supplier), Times.Never);
            
         }
 
@@ -58,10 +58,10 @@ namespace Piloto.Api.UnitTests.Domain.Supplier
         {
             // Arrange
             var serviceSupplier = Fixture.GetServiceSupplier();
-            Fixture.RepositorySupplierMock.Setup(c => c.GetAll()).ReturnsAsync(Fixture.GetMixedSuppliers());
+            Fixture.RepositorySupplierMock.Setup(c => c.GetAsync(null,null,null,true,true)).ReturnsAsync(Fixture.GetMixedSuppliers());
 
             // Act
-            var suppliers = await serviceSupplier.GetAll();
+            var suppliers = await serviceSupplier.GetAsync();
 
             // Assert Fluent Assertions
             suppliers.Should().HaveCount(c => c > 1).And.OnlyHaveUniqueItems();
