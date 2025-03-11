@@ -65,8 +65,8 @@ namespace Piloto.Api.Application.Services
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName + " " + user.LastName),
-                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
+                new Claim(JwtRegisteredClaimNames.GivenName,user.FirstName??"" + " " + user.LastName??""),
+                new Claim(JwtRegisteredClaimNames.UniqueName,user.UserName??"")
             };
 
             var credentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256);
