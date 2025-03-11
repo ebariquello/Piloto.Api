@@ -26,7 +26,7 @@ namespace Piloto.Api.Application.Services
         public async Task<ProductDTO> Add(ProductDTO productDTO)
         {
             var objProduct = _mapperProduct.MapperToEntity(productDTO);
-            var resultEntity = await _serviceProduct.Add(objProduct);
+            var resultEntity = await _serviceProduct.AddAsync(objProduct);
             await _unitOfWork.SaveChangeAsync();
             var resultDTO = _mapperProduct.MapperToDTO(resultEntity);
             return resultDTO;
@@ -37,7 +37,7 @@ namespace Piloto.Api.Application.Services
             foreach (var product in productDTO)
             {
                 var objProduct = _mapperProduct.MapperToEntity(product);
-                resultEntity.Add(await _serviceProduct.Add(objProduct));
+                resultEntity.Add(await _serviceProduct.AddAsync(objProduct));
             }
             await _unitOfWork.SaveChangeAsync();
             var resultDTOs = _mapperProduct.MapperListProducts(resultEntity);
@@ -52,7 +52,7 @@ namespace Piloto.Api.Application.Services
 
         public async Task<ICollection<ProductDTO>> GetAll()
         {
-            var products = await _serviceProduct.GetAll();
+            var products = await _serviceProduct.GetAsync();
             if (products != null)
                 return _mapperProduct.MapperListProducts(products);
             
@@ -62,7 +62,7 @@ namespace Piloto.Api.Application.Services
 
         public async Task<ProductDTO> GetById(int Id)
         {
-            var product = await _serviceProduct.GetById(Id);
+            var product = await _serviceProduct.GetByIdAsync(Id);
             if (product != null)
                 return _mapperProduct.MapperToDTO(product);
 
@@ -72,7 +72,7 @@ namespace Piloto.Api.Application.Services
         public async Task<int> Remove(ProductDTO productDTO)
         {
             var objProduct = _mapperProduct.MapperToEntity(productDTO);
-            var result = await _serviceProduct.Remove(objProduct);
+            var result = await _serviceProduct.RemoveAync(objProduct);
             await _unitOfWork.SaveChangeAsync();
             return result;
         }
@@ -80,7 +80,7 @@ namespace Piloto.Api.Application.Services
         public async Task<ProductDTO> Update(ProductDTO productDTO)
         {
             var objProduct = _mapperProduct.MapperToEntity(productDTO);
-            var resultEntity = await _serviceProduct.Update(objProduct);
+            var resultEntity = await _serviceProduct.UpdateAsync(objProduct);
             await _unitOfWork.SaveChangeAsync();
             var resultDTO = _mapperProduct.MapperToDTO(resultEntity);
             return resultDTO;

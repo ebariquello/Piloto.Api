@@ -36,7 +36,7 @@ namespace Piloto.Api.Application.DTO.DTO
 
         public string HouseNumber { get; set; }
 
-        public SupplierDTO SupplierDTO { get; set; }
+        public SupplierDTO? SupplierDTO { get; set; }
 
         public int? SupplierId{ get; set; }
 

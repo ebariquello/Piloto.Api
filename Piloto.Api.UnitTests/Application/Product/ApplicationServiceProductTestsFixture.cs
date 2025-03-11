@@ -183,7 +183,7 @@ namespace Piloto.Api.UnitTests.Application.Product
                             f.Company.CompanyName(),
                             f.Company.Cnpj(),
                             null,
-                            GenerateSupplierAddressesDTO(2, f.IndexVariable)
+                            GenerateSupplierAddressesDTO(2, f.IndexVariable).ToList()
                             )
                         )
                   );

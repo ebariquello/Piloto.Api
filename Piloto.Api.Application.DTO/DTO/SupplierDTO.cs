@@ -8,7 +8,7 @@ namespace Piloto.Api.Application.DTO.DTO
     public class SupplierDTO
     {
         public SupplierDTO() { }
-        public SupplierDTO(int? id, string name, string cnpj, ICollection<ProductSupplierDTO> productSupplierDTOs, ICollection<SupplierAddressDTO> supplierAddressDTOs)
+        public SupplierDTO(int? id, string name, string cnpj, List<ProductSupplierDTO> productSupplierDTOs, List<SupplierAddressDTO> supplierAddressDTOs)
         {
             Id = id;
             Name = name;
@@ -27,9 +27,9 @@ namespace Piloto.Api.Application.DTO.DTO
         [StringLength(18, ErrorMessage = "The CNPJ is required,with 18 chars", MinimumLength = 18)]
         public string CNPJ { get; set; }
 
-        public ICollection<ProductSupplierDTO> ProductSupplierDTOs { get; set; }
+        public List<ProductSupplierDTO> ProductSupplierDTOs { get; set; }
 
-        public ICollection<SupplierAddressDTO> SupplierAddressDTOs { get; set; }
+        public List<SupplierAddressDTO> SupplierAddressDTOs { get; set; }
 
     }
 }

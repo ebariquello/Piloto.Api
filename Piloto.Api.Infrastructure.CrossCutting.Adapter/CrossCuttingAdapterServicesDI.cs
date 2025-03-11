@@ -23,6 +23,7 @@ namespace Piloto.Api.Infrastructure.CrossCutting.Adapter
             services.AddSingleton(mapper);
             services.AddScoped<IMapperSupplier, MapperSupplier>();
             services.AddScoped<IMapperProduct, MapperProduct>();
+            services.AddScoped<IMapperProductSupplier, MapperProductSupplier>();
         }
     }
 }

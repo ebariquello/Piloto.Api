@@ -26,7 +26,7 @@ namespace Piloto.Api.Application.Services
         public async Task<SupplierDTO> Add(SupplierDTO clientDTO)
         {
             var objClient = _mapperSupplier.MapperToEntity(clientDTO);
-            var resultEntity = await _serviceClient.Add(objClient);
+            var resultEntity = await _serviceClient.AddAsync(objClient);
             await _unitOfWork.SaveChangeAsync();
             var resultDTO = _mapperSupplier.MapperToDTO(resultEntity);
             return resultDTO;
@@ -40,7 +40,7 @@ namespace Piloto.Api.Application.Services
 
         public async Task<ICollection<SupplierDTO>> GetAll()
         {
-            var suppliers = await _serviceClient.GetAll();
+            var suppliers = await _serviceClient.GetAsync();
             if (suppliers != null)
                 return _mapperSupplier.MapperListSuppliers(suppliers);
             return null;
@@ -48,7 +48,7 @@ namespace Piloto.Api.Application.Services
 
         public async Task<SupplierDTO> GetById(int Id)
         {
-            var suplier = await _serviceClient.GetById(Id);
+            var suplier = await _serviceClient.GetByIdAsync(Id);
             if (suplier != null)
                 return _mapperSupplier.MapperToDTO(suplier);
             return null;
@@ -57,7 +57,7 @@ namespace Piloto.Api.Application.Services
         public async Task<int> Remove(SupplierDTO clientDTO)
         {
             var objClient = _mapperSupplier.MapperToEntity(clientDTO);
-            var result = await _serviceClient.Remove(objClient);
+            var result = await _serviceClient.RemoveAync(objClient);
             await _unitOfWork.SaveChangeAsync();
             return result;
         }
@@ -65,7 +65,7 @@ namespace Piloto.Api.Application.Services
         public async Task<SupplierDTO> Update(SupplierDTO clientDTO)
         {
             var objClient = _mapperSupplier.MapperToEntity(clientDTO);
-            var resultEntity = await _serviceClient.Update(objClient);
+            var resultEntity = await _serviceClient.UpdateAsync(objClient);
             await _unitOfWork.SaveChangeAsync();
             var resultDTO = _mapperSupplier.MapperToDTO(resultEntity);
             return resultDTO;
