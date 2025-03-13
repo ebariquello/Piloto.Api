@@ -53,7 +53,7 @@ namespace Piloto.Api.UnitTests.Application.ProductSupplier
 
             services.AddScoped(typeof(IMapperProductSupplier), x =>
             {
-                return new MapperProductSupplier(mapper);
+                return new MapperProductSupplier(mapper, new MapperSupplier(mapper));
             });
             services.AddScoped(typeof(IUnitOfWork<DbContext>), p => { return UnitOfWorkMock.Object; });
             

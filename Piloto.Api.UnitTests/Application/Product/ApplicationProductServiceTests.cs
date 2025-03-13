@@ -81,7 +81,8 @@ namespace Piloto.Api.UnitTests.Application.Product
             IMapper mapper = mapperConfiguration.CreateMapper();
 
             //Fixture.ServiceProductMock.Setup(c => c.GetAll()).ReturnsAsync(mapper.Map<ICollection<Models.Product>>(Fixture.GetMixedProductDTOs()));
-            await applicationServiceProduct.AddRange(Fixture.GetMixedProductDTOs());
+            var nonNullProductDTOs = Fixture.GetMixedProductDTOs().Where(p => p != null).ToList();
+            await applicationServiceProduct.AddRange(nonNullProductDTOs);
             // Act
             var Products = await applicationServiceProduct.GetAll();
 

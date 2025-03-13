@@ -10,7 +10,7 @@ namespace Piloto.Api.Infrastructure.CrossCutting.Adapter.Interfaces
 {
     public interface IMapperProductSupplier
     {
-        ICollection<ProductSupplierDTO> MapperListProducts(ICollection<ProductSupplier> products);
+        ICollection<ProductSupplierDTO> MapperListProductSuppliers(ICollection<ProductSupplier> products);
 
         ProductSupplierDTO MapperToDTO(ProductSupplier product);
 
