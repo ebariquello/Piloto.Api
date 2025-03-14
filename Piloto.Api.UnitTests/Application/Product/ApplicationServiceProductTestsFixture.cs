@@ -144,7 +144,7 @@ namespace Piloto.Api.UnitTests.Application.Product
                    f => new ProductDTO(
                    f.IndexGlobal,
                    f.Commerce.ProductName(),
-                   f.Random.Int(),
+                   f.Random.Int(1,24533),
                    (float)f.Finance.Amount(1, 100),
                    null
                    ));

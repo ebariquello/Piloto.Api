@@ -39,7 +39,7 @@ namespace Piloto.Api.Application.Services
         {
             var products = await _serviceProductSupplier.GetAsync();
             if (products != null)
-                return _mapperProductSupplier.MapperListProducts(products);
+                return _mapperProductSupplier.MapperListProductSuppliers(products);
             
             return null;
 

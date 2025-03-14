@@ -13,7 +13,7 @@ namespace Piloto.Api.Application.Interfaces
         Task<ICollection<ProductDTO>> GetAll();
         Task<ProductDTO> Update(ProductDTO productDTO);
 
-        Task<int> Remove(ProductDTO productDTO);
+        Task<int> Remove(int id);
 
         void Dispose();
 

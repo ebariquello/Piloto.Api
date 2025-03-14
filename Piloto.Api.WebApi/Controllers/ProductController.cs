@@ -17,6 +17,11 @@ namespace Piloto.Api.WebApi.Controllers
         {
             return Ok(await applicationServiceProduct.GetAll());
         }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetProduct(int id)
+        {
+            return Ok(await applicationServiceProduct.GetById(id));
+        }
         [HttpPost]
         public async Task<IActionResult> AddAsync([FromBody] ProductDTO productDTO)
         {
@@ -27,10 +32,10 @@ namespace Piloto.Api.WebApi.Controllers
         {
             return Ok(await applicationServiceProduct.Update(productDTO));
         }
-        [HttpDelete]
-        public async Task<IActionResult> RemoveAsync([FromBody] ProductDTO productDTO)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> RemoveAsync(int id)
         {
-            await applicationServiceProduct.Remove(productDTO);
+            await applicationServiceProduct.Remove(id);
             return Ok();
         }
       

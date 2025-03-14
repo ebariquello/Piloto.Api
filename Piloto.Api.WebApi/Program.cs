@@ -98,7 +98,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowLocalhost",
         policy =>
         {
-            policy.AllowAnyOrigin()  // Allow the specific origin
+            policy.WithOrigins("http://localhost:4200") // Allow only Angular app
                   .AllowAnyHeader()   // Allow all headers
                   .AllowAnyMethod();  // Allow all HTTP methods (GET, POST, etc.)
         });
@@ -174,8 +174,9 @@ else
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseCors("AllowLocalhost");
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseCors("AllowLocalhost");
+
 app.MapControllers();
 app.Run();
