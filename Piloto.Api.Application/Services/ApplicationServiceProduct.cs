@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Piloto.Api.Application.DTO.DTO;
 using Piloto.Api.Application.Interfaces;
 using Piloto.Api.Domain.Core.Interfaces.Repositories;
@@ -6,6 +7,7 @@ using Piloto.Api.Domain.Core.Interfaces.Services;
 using Piloto.Api.Infrastructure.CrossCutting.Adapter.Interfaces;
 using Piloto.Api.Infrastructure.Data.Repository;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Piloto.Api.Application.Services
@@ -17,7 +19,7 @@ namespace Piloto.Api.Application.Services
         private readonly IUnitOfWork<DbContext> _unitOfWork;
         public ApplicationServiceProduct(IServiceProduct serviceProduct, IMapperProduct mapperProduct, IUnitOfWork<DbContext> unitOfWork)
         //private readonly IUnitOfWork _unitOfWork;
-        
+
         {
             _serviceProduct = serviceProduct;
             _mapperProduct = mapperProduct;
@@ -26,11 +28,25 @@ namespace Piloto.Api.Application.Services
         public async Task<ProductDTO> Add(ProductDTO productDTO)
         {
             var objProduct = _mapperProduct.MapperToEntity(productDTO);
-            var resultEntity = await _serviceProduct.Add(objProduct);
+            var resultEntity = await _serviceProduct.AddAsync(objProduct);
             await _unitOfWork.SaveChangeAsync();
             var resultDTO = _mapperProduct.MapperToDTO(resultEntity);
             return resultDTO;
-;        }
+            ;
+        }
+        public async Task<ICollection<ProductDTO>> AddRange(ICollection<ProductDTO> productDTO)
+        {
+            var resultEntity = new List<Domain.Models.Product>();
+            foreach (var product in productDTO)
+            {
+                var objProduct = _mapperProduct.MapperToEntity(product);
+                resultEntity.Add(await _serviceProduct.AddAsync(objProduct));
+            }
+            await _unitOfWork.SaveChangeAsync();
+            var resultDTOs = _mapperProduct.MapperListProducts(resultEntity);
+            return resultDTOs;
+            ;
+        }
 
         public void Dispose()
         {
@@ -39,27 +55,34 @@ namespace Piloto.Api.Application.Services
 
         public async Task<ICollection<ProductDTO>> GetAll()
         {
-            var products = await _serviceProduct.GetAll();
+            var query = _serviceProduct.GetQuery();
+            query.Include(p => p.ProductSuppliers).ThenInclude(ps => ps.Supplier);
+
+            var products = await _serviceProduct.GetAsync(query, null, orderBy: q => q.OrderBy(p => p.Name), true, true);
             if (products != null)
+            {
                 return _mapperProduct.MapperListProducts(products);
-            
+            }
             return null;
 
         }
 
         public async Task<ProductDTO> GetById(int Id)
         {
-            var product = await _serviceProduct.GetById(Id);
+            var query = _serviceProduct.GetQuery();
+            query.Include(p => p.ProductSuppliers).ThenInclude(ps => ps.Supplier);
+            var product = await _serviceProduct.GetByIdAsync(Id, query, true, true);
             if (product != null)
                 return _mapperProduct.MapperToDTO(product);
 
             return null;
         }
 
-        public async Task<int> Remove(ProductDTO productDTO)
+        public async Task<int> Remove(int id)
         {
-            var objProduct = _mapperProduct.MapperToEntity(productDTO);
-            var result = await _serviceProduct.Remove(objProduct);
+            var productToDelete = await _serviceProduct.GetByIdAsync(id, null, true, true);
+            //var objProduct = _mapperProduct.MapperToEntity(productDTO);
+            var result = await _serviceProduct.RemoveAync(productToDelete);
             await _unitOfWork.SaveChangeAsync();
             return result;
         }
@@ -67,7 +90,7 @@ namespace Piloto.Api.Application.Services
         public async Task<ProductDTO> Update(ProductDTO productDTO)
         {
             var objProduct = _mapperProduct.MapperToEntity(productDTO);
-            var resultEntity = await _serviceProduct.Update(objProduct);
+            var resultEntity = await _serviceProduct.UpdateAsync(objProduct);
             await _unitOfWork.SaveChangeAsync();
             var resultDTO = _mapperProduct.MapperToDTO(resultEntity);
             return resultDTO;

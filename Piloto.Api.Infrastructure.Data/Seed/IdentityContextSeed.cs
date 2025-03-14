@@ -4,12 +4,15 @@ using Microsoft.Extensions.Logging;
 using Piloto.Api.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Piloto.Api.Infrastructure.Data.Seed
 {
+    [ExcludeFromCodeCoverage]
+
     public class IdentityContextSeed
     {
         public static async Task SeedRolesAsync(IServiceProvider serviceProvider)

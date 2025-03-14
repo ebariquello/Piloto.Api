@@ -23,9 +23,14 @@ namespace Piloto.Api.Infrastructure.Data.Repository
         public TContext Context => _dbFactory.Context;
       
 
-        public Task<int> SaveChangeAsync()
+        public Task<int> SaveChangeAsync(bool changeEntityTracker = false)
         {
-            return Context.SaveChangesAsync();
+            var result =  Context.SaveChangesAsync();
+            if (changeEntityTracker)
+            {
+                Context.ChangeTracker.Clear();
+            }   
+            return result;
         }
         public async Task<TResult> ExecuteTransactionAsync<TResult>(Func<Task<TResult>> func)
         {

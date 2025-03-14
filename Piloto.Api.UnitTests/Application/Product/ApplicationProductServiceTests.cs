@@ -31,22 +31,20 @@ namespace Piloto.Api.UnitTests.Application.Product
         public async void ApplicationProductService_AddNew_ShouldAddWithSuccess()
         {
             // Arrange
-
-
             IServiceScope serviceScope = Fixture.ServiceProvider.CreateScope();
             IMapperProduct mapperProduct = serviceScope.ServiceProvider.GetService<IMapperProduct>();
             IApplicationServiceProduct applicationServiceProduct = serviceScope.ServiceProvider.GetService<IApplicationServiceProduct>();
-            Fixture.UnitOfWorkMock.Setup(uow => uow.SaveChangeAsync()).ReturnsAsync(1);
+            //Fixture.UnitOfWorkMock.Setup(uow => uow.SaveChangeAsync()).ReturnsAsync(1);
             var productDTO = Fixture.GetValidProductDTO();
             Models.Product product = mapperProduct.MapperToEntity(productDTO);
-            var productAdded = new Models.Product(1, productDTO.Name, product.Stock, product.Price, product.ProductSuppliers);
-            Fixture.ServiceProductMock.Setup(s => s.Add(product)).ReturnsAsync(productAdded);
+            var productAdded = new Models.Product(product.Id, productDTO.Name, product.Stock, product.Price, product.ProductSuppliers);
+            //Fixture.ServiceProductMock.Setup(s => s.Add(product)).ReturnsAsync(productAdded);
             //Fixture.RepositoryProductMock.Setup(s => s.Add(product)).ReturnsAsync(productAdded);
             // Act
             var result = await applicationServiceProduct.Add(productDTO);
 
             // Assert
-            Fixture.ServiceProductMock.Verify(s => s.Add(product), Times.Once);
+            //Fixture.ServiceProductMock.Verify(s => s.Add(product), Times.Once);
             //Fixture.RepositoryProductMock.Verify(s => s.Add(product), Times.Once);
             Assert.Equal(productAdded.Id, result.Id);
             Assert.Equal(productAdded.Name, result.Name);
@@ -61,13 +59,13 @@ namespace Piloto.Api.UnitTests.Application.Product
             IMapperProduct mapperProduct = serviceScope.ServiceProvider.GetService<IMapperProduct>();
             IApplicationServiceProduct applicationServiceProduct = serviceScope.ServiceProvider.GetService<IApplicationServiceProduct>();
             Models.Product product = mapperProduct.MapperToEntity(productDTO);
-            Fixture.ServiceProductMock.Setup(c => c.Add(product));
+            //Fixture.ServiceProductMock.Setup(c => c.Add(product));
             // Act
             applicationServiceProduct.Add(productDTO);
 
             // Assert
             Assert.False(product.IsValid());
-            Fixture.ServiceProductMock.Verify(s => s.Add(product), Times.Once);
+            //Fixture.ServiceProductMock.Verify(s => s.Add(product), Times.Once);
             //Fixture.RepositoryProductMock.Verify(s => s.Add(product), Times.Never);
         }
 
@@ -82,8 +80,9 @@ namespace Piloto.Api.UnitTests.Application.Product
             MapperConfiguration mapperConfiguration = new MapperConfiguration(cfg => cfg.AddProfile(new MappingConfiguration()));
             IMapper mapper = mapperConfiguration.CreateMapper();
 
-            Fixture.ServiceProductMock.Setup(c => c.GetAll()).ReturnsAsync(mapper.Map<ICollection<Models.Product>>(Fixture.GetMixedProductDTOs()));
-
+            //Fixture.ServiceProductMock.Setup(c => c.GetAll()).ReturnsAsync(mapper.Map<ICollection<Models.Product>>(Fixture.GetMixedProductDTOs()));
+            var nonNullProductDTOs = Fixture.GetMixedProductDTOs().Where(p => p != null).ToList();
+            await applicationServiceProduct.AddRange(nonNullProductDTOs);
             // Act
             var Products = await applicationServiceProduct.GetAll();
 

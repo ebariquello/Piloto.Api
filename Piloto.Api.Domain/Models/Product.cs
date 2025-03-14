@@ -9,7 +9,7 @@ namespace Piloto.Api.Domain.Models
     {
         public Product()
         {
-            ProductSuppliers = new HashSet<ProductSupplier>(); ;
+            ProductSuppliers = new HashSet<ProductSupplier>();
         }
         public Product(int? id, string name, int stock, float price, ICollection<ProductSupplier> suppliers)
         {

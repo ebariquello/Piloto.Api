@@ -36,12 +36,10 @@ namespace Piloto.Api.Infrastructure.Repository.Repositories
            
         }
 
-        public async virtual Task<TEntity> Add(TEntity obj)
+        public async virtual Task<TEntity> AddAsync(TEntity obj)
         {
             try
             {
-                //_context.Set<TEntity>().Add(obj);
-                //_context.SaveChanges();
                 var result = await DbSet.AddAsync(obj);
                 return result.Entity;
 
@@ -52,26 +50,84 @@ namespace Piloto.Api.Infrastructure.Repository.Repositories
                 throw;
             }
         }
-        //public virtual TEntity GetById(int Id) => _context.Set<TEntity>().Find(Id);
-        //public virtual ICollection<TEntity> GetAll() => _context.Set<TEntity>().ToList();
-        public async virtual Task<TEntity> GetById(int Id) => await DbSet.FindAsync(Id);
-        public async virtual Task<ICollection<TEntity>> GetAll() => await DbSet.ToListAsync();
+        public async virtual Task AddRangeAsync(ICollection<TEntity> objs)
+        {
+            try
+            {
+                 await DbSet.AddRangeAsync(objs);
+            }
+            catch (Exception)
+            {
 
-        //public ICollection<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
-        //{
-        //    var result = _context.Set<TEntity>().Where(predicate);
-        //    if (result != null)
-        //        return result.ToList();
+                throw;
+            }
+        }
 
-        //    return null;
+        public virtual async Task<TEntity> GetByIdAsync(int id, IQueryable<TEntity> query = null, bool asNoTracking = true, bool asSingleQuery = true)
+        {
+            var entityType = _dbFactory.Context.Model.FindEntityType(typeof(TEntity));
+            var _primaryKeyName = entityType.FindPrimaryKey().Properties
+                .Select(p => p.Name)
+                .FirstOrDefault();
 
-        //}
-        public async Task<ICollection<TEntity>> Find(Expression<Func<TEntity, bool>> predicate)
+            IQueryable<TEntity> queryAux = query ?? DbSet;
+
+            if (asNoTracking)
+            {
+                queryAux = queryAux.AsNoTracking();
+            }
+
+            if (asSingleQuery)
+            {
+                queryAux = queryAux.AsSingleQuery();
+            }
+            return await queryAux.FirstOrDefaultAsync(e => EF.Property<int>(e, _primaryKeyName) == id);
+        }
+
+
+       
+
+        public virtual async Task<ICollection<TEntity>> GetAsync(
+            IQueryable<TEntity> query = null,
+            Expression<Func<TEntity, bool>> filter = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+            bool asNoTracking = true,
+            bool asSingleQuery = true
+            )
+        {
+            IQueryable<TEntity> queryAux = query ?? DbSet;
+
+            if (asNoTracking)
+            {
+                queryAux = queryAux.AsNoTracking();
+            }
+
+            if (asSingleQuery)
+            {
+                queryAux = queryAux.AsSingleQuery();
+            }
+
+            if (filter != null)
+            {
+                queryAux = queryAux.Where(filter);
+            }
+
+            if (orderBy != null)
+            {
+                return await orderBy(queryAux).ToListAsync();
+            }
+            else
+            {
+                return await queryAux.ToListAsync();
+            }
+        }
+
+        public async Task<ICollection<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await DbSet.Where(predicate).ToListAsync();
         }
 
-        public async virtual Task<TEntity> Update(TEntity obj)
+        public async virtual Task<TEntity> UpdateAsync(TEntity obj)
         {
 
             try
@@ -87,7 +143,7 @@ namespace Piloto.Api.Infrastructure.Repository.Repositories
 
 
         }
-        public async virtual Task<int> Remove(TEntity obj)
+        public async virtual Task<int> RemoveAsync(TEntity obj)
         {
             try
             {
@@ -105,6 +161,20 @@ namespace Piloto.Api.Infrastructure.Repository.Repositories
             }
 
 
+        }
+        public IQueryable<TEntity> GetQuery(params Expression<Func<TEntity, object>>[] includes)
+        {
+            IQueryable<TEntity> query = DbSet;
+
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
+
+            return query;
         }
 
         public virtual void Dispose()

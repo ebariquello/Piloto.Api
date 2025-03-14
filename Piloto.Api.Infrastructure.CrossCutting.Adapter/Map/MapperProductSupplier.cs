@@ -13,14 +13,21 @@ namespace Piloto.Api.Infrastructure.CrossCutting.Adapter.Map
     public class MapperProductSupplier : IMapperProductSupplier
     {
         public readonly IMapper _mapper; 
-        public MapperProductSupplier(IMapper mapper)
+        private IMapperSupplier _mapperSupplier;
+        public MapperProductSupplier(IMapper mapper, IMapperSupplier mapperSupplier)
         {
             _mapper = mapper;
+            _mapperSupplier = mapperSupplier;
         }
 
-        public ICollection<ProductSupplierDTO> MapperListProducts(ICollection<ProductSupplier> products)
+        public ICollection<ProductSupplierDTO> MapperListProductSuppliers(ICollection<ProductSupplier> products)
         {
-            return _mapper.Map<ICollection<ProductSupplierDTO>>(products);
+            var resultDtos= _mapper.Map<ICollection<ProductSupplierDTO>>(products);
+            foreach (var product in resultDtos)
+            {
+                product.SupplierDTO = _mapperSupplier.MapperToDTO(products.FirstOrDefault(p => p.Id == product.Id).Supplier);
+            }
+            return resultDtos;
         }
 
         public ProductSupplierDTO MapperToDTO(ProductSupplier product)

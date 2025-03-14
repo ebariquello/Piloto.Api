@@ -53,7 +53,7 @@ namespace Piloto.Api.UnitTests.Application.ProductSupplier
 
             services.AddScoped(typeof(IMapperProductSupplier), x =>
             {
-                return new MapperProductSupplier(mapper);
+                return new MapperProductSupplier(mapper, new MapperSupplier(mapper));
             });
             services.AddScoped(typeof(IUnitOfWork<DbContext>), p => { return UnitOfWorkMock.Object; });
             
@@ -98,7 +98,7 @@ namespace Piloto.Api.UnitTests.Application.ProductSupplier
 
             var psDTOResult = productSupplierDTO.Generate();
 
-            psDTOResult.SupplierDTO.SupplierAddressDTOs = GenerateSupplierAddressesDTO(1, psDTOResult.SupplierDTO);
+            psDTOResult.SupplierDTO.SupplierAddressDTOs = GenerateSupplierAddressesDTO(1, psDTOResult.SupplierDTO).ToList();
             return psDTOResult;
         }
         
@@ -131,7 +131,7 @@ namespace Piloto.Api.UnitTests.Application.ProductSupplier
 
             var psDTOResults = productSupplierDTO.Generate(number);
 
-            psDTOResults.ForEach(pDTO => { pDTO.SupplierDTO.SupplierAddressDTOs = GenerateSupplierAddressesDTO(1, pDTO.SupplierDTO); });
+            psDTOResults.ForEach(pDTO => { pDTO.SupplierDTO.SupplierAddressDTOs = GenerateSupplierAddressesDTO(1, pDTO.SupplierDTO).ToList(); });
             return psDTOResults;
         }
        
@@ -150,7 +150,7 @@ namespace Piloto.Api.UnitTests.Application.ProductSupplier
 
             var psDTOResult = productSupplierDTO.Generate();
 
-            psDTOResult.SupplierDTO.SupplierAddressDTOs = GenerateSupplierAddressesDTO(1, psDTOResult.SupplierDTO);
+            psDTOResult.SupplierDTO.SupplierAddressDTOs = GenerateSupplierAddressesDTO(1, psDTOResult.SupplierDTO).ToList();
             return psDTOResult;
         }
 

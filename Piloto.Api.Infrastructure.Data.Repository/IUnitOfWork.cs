@@ -11,7 +11,7 @@ namespace Piloto.Api.Infrastructure.Data.Repository
 {
     public interface IUnitOfWork<TContext> where TContext : DbContext
     {
-        Task<int> SaveChangeAsync();
+        Task<int> SaveChangeAsync(bool changeEntityTracker = false);
 
         Task<TResult> ExecuteTransactionAsync<TResult>(Func<Task<TResult>> func);
 

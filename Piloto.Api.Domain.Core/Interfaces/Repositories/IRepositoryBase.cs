@@ -2,6 +2,7 @@
 using Piloto.Api.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -14,17 +15,27 @@ namespace Piloto.Api.Domain.Core.Interfaces.Repositories
  
     {
 
-        Task<TEntity> Add(TEntity entity);
+        Task<TEntity> AddAsync(TEntity entity);
+        Task AddRangeAsync(ICollection<TEntity> entity);
 
-        Task<TEntity> GetById(int id);
 
-        Task<ICollection<TEntity>> GetAll();
+        Task<TEntity> GetByIdAsync(int id, IQueryable<TEntity> query = null, bool asNoTracking = true, bool asSingleQuery = true);
 
-        Task<ICollection<TEntity>> Find(Expression<Func<TEntity, bool>> predicate);
+        Task<ICollection<TEntity>> GetAsync(
+            IQueryable<TEntity> query = null,
+            Expression<Func<TEntity, bool>> filter = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+            bool asNoTracking = true,
+            bool asSingleQuery = true
+            );
 
-        Task<TEntity> Update(TEntity entity);
+        Task<ICollection<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
 
-        Task<int> Remove(TEntity entity);
+        Task<TEntity> UpdateAsync(TEntity entity);
+
+        Task<int> RemoveAsync(TEntity entity);
+
+        IQueryable<TEntity> GetQuery(params Expression<Func<TEntity, object>>[] includes);
 
         void Dispose();
     }

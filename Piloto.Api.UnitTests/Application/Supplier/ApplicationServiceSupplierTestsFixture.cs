@@ -143,8 +143,8 @@ namespace Piloto.Api.UnitTests.Application.Supplier
                    ));
 
             var supplierDTO = supplierDTOTest.Generate();
-            supplierDTO.ProductSupplierDTOs = GenerateProductDTOsForSupplierDTO(2, supplierDTO);
-            supplierDTO.SupplierAddressDTOs = GenerateSupplierAddressesDTO(2, supplierDTO.Id);
+            supplierDTO.ProductSupplierDTOs = GenerateProductDTOsForSupplierDTO(2, supplierDTO).ToList();
+            supplierDTO.SupplierAddressDTOs = GenerateSupplierAddressesDTO(2, supplierDTO.Id).ToList();
             return supplierDTO;
         }
 

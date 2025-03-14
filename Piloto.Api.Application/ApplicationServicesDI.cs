@@ -14,6 +14,9 @@ namespace Piloto.Api.Application
         public static void AddApplicationServicesDI(this IServiceCollection services) {
             services.AddScoped<IApplicationServiceSupplier, ApplicationServiceSupplier>();
             services.AddScoped<IApplicationServiceProduct, ApplicationServiceProduct>();
+            services.AddScoped<IApplicationServiceProductSupplier, ApplicationServiceProductSupplier>();
+            services.AddScoped<IApplicationServiceAuthUser, ApplicationServiceAuthUser>();
+
 
         }
     }

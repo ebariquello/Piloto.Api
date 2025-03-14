@@ -35,16 +35,16 @@ namespace Piloto.Api.UnitTests.Infrastructure.Data.Repository
             var product = SharedTestsFixture.GetProductsHasNoSuppliers(1).FirstOrDefault();
 
             /// Act
-            var savedProductResultAdd = await repoProduct.Add(product);
+            var savedProductResultAdd = await repoProduct.AddAsync(product);
             await unitOfWork.SaveChangeAsync();
 
             var findLastSavedProduct = await repoProduct
-                .Find(p => product.Name == p.Name &&
+                .FindAsync(p => product.Name == p.Name &&
                 product.Price == p.Price &&
                 product.Stock == p.Stock &&
                 p.ProductSuppliers.Count == 0);
 
-            var products = await repoProduct.GetAll();
+            var products = await repoProduct.GetAsync();
             /// Assert
             products.Should().HaveCount(c => c >= 1).And.OnlyHaveUniqueItems();
             Assert.Single(findLastSavedProduct);
@@ -68,16 +68,16 @@ namespace Piloto.Api.UnitTests.Infrastructure.Data.Repository
             var product = SharedTestsFixture.GetProductsHasNoSuppliers(1).FirstOrDefault();
 
             /// Act
-            var savedProductResultAdd = await repoProduct.Add(product);
+            var savedProductResultAdd = await repoProduct.AddAsync(product);
 
             await unitOfWork.SaveChangeAsync();
 
             savedProductResultAdd.ProductSuppliers = SharedTestsFixture.GenerateSuppliersForProduct(savedProductResultAdd, 2, false);
-            var updatedProduct = await repoProduct.Update(savedProductResultAdd);
+            var updatedProduct = await repoProduct.UpdateAsync(savedProductResultAdd);
             await unitOfWork.SaveChangeAsync();
 
             var findLastSavedProduct = await repoProduct
-                .GetById(updatedProduct.Id.Value);
+                .GetByIdAsync(updatedProduct.Id.Value, repoProduct.GetQuery(p=> p.ProductSuppliers));
 
             /// Assert
             Assert.Equal(savedProductResultAdd.Id, findLastSavedProduct.Id);
@@ -103,35 +103,35 @@ namespace Piloto.Api.UnitTests.Infrastructure.Data.Repository
             var product = Fixture.GetProductHasSuppliersHasAddress();
 
             /// Act
-            var savedProductResultAdd = await repoProduct.Add(product);
+            var savedProductResultAdd = await repoProduct.AddAsync(product);
 
-            await unitOfWork.SaveChangeAsync();
+            await unitOfWork.SaveChangeAsync(true);
 
             // Find Last Product
             var findLastSavedProduct = await repoProduct
-                .GetById(savedProductResultAdd.Id.Value);
+                .GetByIdAsync(savedProductResultAdd.Id.Value,null,true, true);
             // Find Relationship Product Suppliers
             var findLastSavedProductSupplierByProductId = await repoProductSupplier
-                .Find(ps => ps.ProductId == savedProductResultAdd.Id.Value);
+                .FindAsync(ps => ps.ProductId == savedProductResultAdd.Id.Value);
 
-            // Kill RelationShip
-            findLastSavedProductSupplierByProductId.ToList().ForEach(async (ps) => await repoProductSupplier.Remove(ps));
+            //Kill RelationShip
+            findLastSavedProductSupplierByProductId.ToList().ForEach(async (ps) => await repoProductSupplier.RemoveAsync(ps));
 
             //Kill Supplier
-            findLastSavedProduct.ProductSuppliers.ToList().ForEach(async (s) => await repoSupplier.Remove(s.Supplier));
+            findLastSavedProduct.ProductSuppliers.ToList().ForEach(async (s) => await repoSupplier.RemoveAsync(s.Supplier));
 
             //Kill Product
-            var result = await repoProduct.Remove(findLastSavedProduct);
+            var result = await repoProduct.RemoveAsync(findLastSavedProduct);
 
             //Commit
-            await unitOfWork.SaveChangeAsync();
+            await unitOfWork.SaveChangeAsync(true);
 
             //try find the product
             findLastSavedProduct = await repoProduct
-              .GetById(savedProductResultAdd.Id.Value);
+              .GetByIdAsync(savedProductResultAdd.Id.Value);
 
             /// Assert
-            Assert.Null(findLastSavedProduct);
+            Assert.True(findLastSavedProduct==null);
 
         }
 

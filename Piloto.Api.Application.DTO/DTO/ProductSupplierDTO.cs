@@ -18,10 +18,10 @@ namespace Piloto.Api.Application.DTO.DTO
         public int? Id { get; set; }
 
         public int? ProductId { get; set; }
-        public virtual ProductDTO ProductDTO { get; set; } = null!;
+        public virtual ProductDTO? ProductDTO { get; set; } 
 
         public int? SupplierId { get; set; } // In lack of better name.
-        public virtual SupplierDTO SupplierDTO { get; set; } = null!;
+        public virtual SupplierDTO? SupplierDTO { get; set; }
 
 
 
